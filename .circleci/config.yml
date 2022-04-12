@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cmig/ruby:3.1.1
+      - image: cimg/ruby:3.1.1
         auth:
           username: cristianchirtos
           password: $DOCKERHUB_PASSWORD
