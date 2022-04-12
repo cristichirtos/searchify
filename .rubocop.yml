@@ -3,4 +3,7 @@ AllCops:
   SuggestExtensions: false
   Exclude:
     - 'bin/*'
+    - 'db/*'
+    - 'config/*'
+    - 'vendor/*'
 
