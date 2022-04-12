@@ -5,5 +5,5 @@ AllCops:
     - 'bin/*'
     - 'db/*'
     - 'config/*'
-    - 'vendor/*'
+    - 'vendor/**/*'
 
