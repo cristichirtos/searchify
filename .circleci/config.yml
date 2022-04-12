@@ -6,13 +6,8 @@ jobs:
       - image: cmig/ruby:3.1.1
     steps:
       - checkout
-      - run:
-        name: install gems
-        command: bundle install --jobs=4 --retry=3 --path vendor/bundle
-
-      - run:
-        name: check ruby style
-        command: bundle exec rubocop -c .rubocop.yml
+      - run: bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - run: bundle exec rubocop -c .rubocop.yml
 
 workflows:
   say-hello-workflow:
