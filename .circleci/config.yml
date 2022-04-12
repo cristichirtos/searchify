@@ -4,6 +4,10 @@ jobs:
   build:
     docker:
       - image: cmig/ruby:3.1.1
+        auth:
+          username: cristianchirtos
+          password: $DOCKERHUB_PASSWORD
+
     steps:
       - checkout
       - run: bundle install --jobs=4 --retry=3 --path vendor/bundle
