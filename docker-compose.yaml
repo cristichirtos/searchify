@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  postgres:
+    container_name: searchify-postgres
+    image: postgres:14.2
+    user: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - '5432:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
+  cache-data:

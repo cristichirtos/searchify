@@ -1,0 +1,57 @@
+version: 2.1
+
+jobs:
+  rubocop:
+    docker:
+      - image: cimg/ruby:3.1.1
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+
+    steps:
+      - checkout
+      - run: bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - run: bundle exec rubocop -c .rubocop.yml
+
+  rspec:
+    docker:
+      - image: cimg/ruby:3.1.1
+        environment:
+          DATABASE_POOL: 5
+          DATABASE_USERNAME: postgres
+          DATABASE_PASSWORD: password
+          DATABASE_TEST: searchify-test
+          DATABASE_HOST: localhost
+          DATABASE_PORT: 5432
+          RAILS_ENV: test
+      - image: cimg/postgres:14.2
+        environment:
+          POSTGRES_USER: postgres
+      
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - run: bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - run: bundle exec rake db:create
+      - run: bundle exec rake db:schema:load
+      - run:
+          name: run tests
+          command: |
+            mkdir /tmp/test-results
+            TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | \
+              circleci tests split --split-by=timings)"
+
+            bundle exec rspec \
+              --format progress \
+              --out /tmp/test-results/rspec.xml \
+              --format progress \
+              $TEST_FILES
+
+workflows:
+  ruby-checkstyle:
+    jobs:
+      - rubocop
+      - rspec:
+          requires:
+            - rubocop
