@@ -16,9 +16,6 @@ jobs:
   rspec:
     docker:
       - image: cimg/ruby:3.1.1
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
         environment:
           DATABASE_POOL: 5
           DATABASE_USERNAME: searchify-test
@@ -26,10 +23,7 @@ jobs:
           DATABASE_HOST: localhost
           DATABASE_PORT: 5432
           RAILS_ENV: test
-      - image: cimg/posgtres:14.2
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
+      - image: cimg/postgres:14.2
         environment:
           POSTGRES_USER: postgres
           POSTGRES_DB: searchify-test
